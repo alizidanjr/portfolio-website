@@ -19,6 +19,8 @@ interface DesktopContextType {
     closeWindow: (id: AppId) => void
     minimizeWindow: (id: AppId) => void
     focusWindow: (id: AppId) => void
+    wallpaper: string
+    setWallpaper: (wallpaper: string) => void
 }
 
 const DesktopContext = createContext<DesktopContextType | undefined>(undefined)
@@ -35,6 +37,7 @@ export function DesktopProvider({ children }: { children: ReactNode }) {
     const [windows, setWindows] = useState<Record<AppId, WindowState>>(initialWindows)
     const [activeWindowId, setActiveWindowId] = useState<AppId | null>('terminal')
     const [maxZIndex, setMaxZIndex] = useState(10)
+    const [wallpaper, setWallpaper] = useState('grid') // 'grid', 'matrix', 'waves'
 
     const focusWindow = (id: AppId) => {
         setActiveWindowId(id)
@@ -81,7 +84,7 @@ export function DesktopProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <DesktopContext.Provider value={{ windows, activeWindowId, openWindow, closeWindow, minimizeWindow, focusWindow }}>
+        <DesktopContext.Provider value={{ windows, activeWindowId, openWindow, closeWindow, minimizeWindow, focusWindow, wallpaper, setWallpaper }}>
             {children}
         </DesktopContext.Provider>
     )
